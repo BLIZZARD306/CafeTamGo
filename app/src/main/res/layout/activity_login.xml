@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0C7C1D"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:layout_width="315dp"
+        android:layout_height="133dp"
+        android:gravity="center"
+        android:text="CafeTamGo"
+        android:textColor="#FFC107"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.056" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="295dp"
+        android:layout_height="55dp"
+        android:backgroundTint="#FFC107"
+        android:gravity="center"
+        android:text="LOGIN"
+        android:textColor="#0C7C1D"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="471dp" />
+
+    <Button
+        android:id="@+id/btnGoToRegister"
+        android:layout_width="295dp"
+        android:layout_height="55dp"
+        android:backgroundTint="#FFC107"
+        android:gravity="center"
+        android:text="REGISTER"
+        android:textColor="#0C7C1D"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="542dp" />
+
+    <EditText
+        android:id="@+id/etLoginPassword"
+        android:layout_width="295dp"
+        android:layout_height="47dp"
+        android:background="#FFFBFB"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="375dp" />
+
+    <EditText
+        android:id="@+id/etLoginEmail"
+        android:layout_width="295dp"
+        android:layout_height="45dp"
+        android:background="#FFFBFB"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="textEmailAddress"
+        app:layout_constraintCircleRadius="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="263dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textColor="#FFC107"
+        tools:layout_editor_absoluteX="58dp"
+        tools:layout_editor_absoluteY="233dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:textColor="#FFC107"
+        tools:layout_editor_absoluteX="58dp"
+        tools:layout_editor_absoluteY="341dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
