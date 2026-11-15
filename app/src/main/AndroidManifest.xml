@@ -14,6 +14,8 @@
 
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".HomeActivity"/>
+        <activity android:name=".StallDetailsActivity"/>
+        <activity android:name=".ProductDetailsActivity" />
 
         <activity
             android:name=".LoginActivity"

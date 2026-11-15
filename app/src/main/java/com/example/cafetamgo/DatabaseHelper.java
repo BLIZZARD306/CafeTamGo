@@ -11,7 +11,7 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "cafetamgo.db";
-    private static final int DATABASE_VERSION = 2; // Bumped version to recreate tables
+    private static final int DATABASE_VERSION = 4; // Bumped version to recreate tables with seed data
 
     public static final String TABLE_USERS = "users";
     public static final String COLUMN_USER_ID = "userId";
@@ -76,7 +76,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(orderId) REFERENCES orders(orderId))";
         db.execSQL(CREATE_REVIEWS_TABLE);
 
-        // Add this inside onCreate() right after creating the tables
+        // Seed data for stalls and menu items
         db.execSQL("INSERT INTO stalls (stallName, location, openingTime, closingTime, description, isOpen) VALUES ('Mangan Tamu Pu', '8th Floor | FEU Tech Canteen', '7:00 AM', '4:00 PM', 'Kapampangan dishes', 1)");
         db.execSQL("INSERT INTO stalls (stallName, location, openingTime, closingTime, description, isOpen) VALUES ('Sisig-Ok', '8th Floor | FEU Tech Canteen', '7:00 AM', '4:00 PM', 'Sizzling favorites', 1)");
 
@@ -210,5 +210,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return menuList;
+    }
+
+    public boolean addReview(int userId, Integer stallId, int menuItemId, int rating, String comment, String reviewDate) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("userId", userId);
+        values.put("stallId", stallId);
+        values.put("menuItemId", menuItemId);
+        values.put("orderId", 1); // placeholder order reference
+        values.put("rating", rating);
+        values.put("comment", comment);
+        values.put("reviewDate", reviewDate);
+        values.put("isVisible", 1);
+
+        long result = db.insert("reviews", null, values);
+        db.close();
+        return result != -1;
+    }
+
+    public List<String> getReviewsForProduct(int menuItemId) {
+        List<String> reviewList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT r.*, u.name FROM reviews r JOIN users u ON r.userId = u.userId " +
+                "WHERE r.menuItemId = ? AND r.isVisible = 1 ORDER BY r.reviewId DESC";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(menuItemId)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                String userName = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                int rating = cursor.getInt(cursor.getColumnIndexOrThrow("rating"));
+                String comment = cursor.getString(cursor.getColumnIndexOrThrow("comment"));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow("reviewDate"));
+
+                reviewList.add(userName + " - ★" + rating + "/5\n\"" + comment + "\"\n(" + date + ")");
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return reviewList;
     }
 }

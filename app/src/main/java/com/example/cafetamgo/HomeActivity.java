@@ -42,18 +42,18 @@ public class HomeActivity extends AppCompatActivity {
         // 1. Load Stalls
         List<Stall> stallList = dbHelper.getAllStalls();
         StallAdapter stallAdapter = new StallAdapter(stallList, stall -> {
-            /*Intent intent = new Intent(HomeActivity.this, StallDetailsActivity.class);
+            Intent intent = new Intent(HomeActivity.this, StallDetailsActivity.class);
             intent.putExtra("STALL_ID", stall.getStallId());
-            startActivity(intent);*/
+            startActivity(intent);
         });
         rvStalls.setAdapter(stallAdapter);
 
         // 2. Load Recommendations (Menu Items)
         List<MenuItem> menuList = dbHelper.getAllMenuItems();
         RecommendationAdapter recommendationAdapter = new RecommendationAdapter(menuList, item -> {
-            /*Intent intent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
+            Intent intent = new Intent(HomeActivity.this, ProductDetailsActivity.class);
             intent.putExtra("MENU_ITEM_ID", item.getMenuItemId());
-            startActivity(intent);*/
+            startActivity(intent);
         });
         rvRecommendations.setAdapter(recommendationAdapter);
     }
