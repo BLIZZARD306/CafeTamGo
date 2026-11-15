@@ -13,6 +13,7 @@
         android:theme="@style/Theme.CafeTamGo">
 
         <activity android:name=".RegisterActivity"/>
+        <activity android:name=".HomeActivity"/>
 
         <activity
             android:name=".LoginActivity"

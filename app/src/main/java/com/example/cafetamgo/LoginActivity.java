@@ -46,7 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         User user = dbHelper.login(email, password);
         if (user != null) {
             Toast.makeText(LoginActivity.this, "Welcome back, " + user.getName() + "!", Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to Home/Explore screen
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
         } else {
             Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
         }
