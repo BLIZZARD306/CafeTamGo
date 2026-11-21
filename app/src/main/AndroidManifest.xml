@@ -16,6 +16,13 @@
         <activity android:name=".HomeActivity"/>
         <activity android:name=".StallDetailsActivity"/>
         <activity android:name=".ProductDetailsActivity" />
+        <activity android:name=".AdminDashboardActivity" />
+        <activity android:name=".ManageStallsActivity" />
+        <activity android:name=".AddEditStallActivity" />
+        <activity android:name=".AddEditProductActivity" />
+        <activity android:name=".ManageProductsActivity" />
+        <activity android:name=".ReviewModerationActivity" />
+        <activity android:name=".ReportDetailsActivity"  />
 
         <activity
             android:name=".LoginActivity"

@@ -5,13 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "cafetamgo.db";
-    private static final int DATABASE_VERSION = 4; // Bumped version to recreate tables with seed data
+    private static final int DATABASE_VERSION = 7;
 
     public static final String TABLE_USERS = "users";
     public static final String COLUMN_USER_ID = "userId";
@@ -76,16 +77,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(orderId) REFERENCES orders(orderId))";
         db.execSQL(CREATE_REVIEWS_TABLE);
 
-        // Seed data for stalls and menu items
+        String CREATE_REPORTS_TABLE = "CREATE TABLE review_reports ("
+                + "reportId INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "reviewId INTEGER NOT NULL, "
+                + "reporterId INTEGER NOT NULL, "
+                + "reason TEXT NOT NULL, "
+                + "explanation TEXT, "
+                + "status TEXT NOT NULL DEFAULT 'PENDING', "
+                + "FOREIGN KEY(reviewId) REFERENCES reviews(reviewId), "
+                + "FOREIGN KEY(reporterId) REFERENCES users(userId))";
+        db.execSQL(CREATE_REPORTS_TABLE);
+
+        // Seed data
+        db.execSQL("INSERT INTO orders DEFAULT VALUES");
         db.execSQL("INSERT INTO stalls (stallName, location, openingTime, closingTime, description, isOpen) VALUES ('Mangan Tamu Pu', '8th Floor | FEU Tech Canteen', '7:00 AM', '4:00 PM', 'Kapampangan dishes', 1)");
         db.execSQL("INSERT INTO stalls (stallName, location, openingTime, closingTime, description, isOpen) VALUES ('Sisig-Ok', '8th Floor | FEU Tech Canteen', '7:00 AM', '4:00 PM', 'Sizzling favorites', 1)");
 
-        db.execSQL("INSERT INTO menu_items (stallId, foodName, description, category, price, isAvailable) VALUES (2, 'Pork Sisig', 'Crispy pork sisig with egg', 'Main Dish', 8000, 1)");
+        db.execSQL("INSERT INTO menu_items (stallId, foodName, description, category, price, isAvailable) VALUES (2, 'Pork Sisig', 'Crispy pork sisig with egg', 'Rice Meals', 8000, 1)");
         db.execSQL("INSERT INTO menu_items (stallId, foodName, description, category, price, isAvailable) VALUES (1, 'Carbonara', 'Creamy white sauce pasta', 'Pasta', 5000, 1)");
+        db.execSQL("INSERT INTO users (name, email, password, role) VALUES ('Tammy', 'admin@cafetamgo.com', 'admin123', 'ADMIN')");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS review_reports");
         db.execSQL("DROP TABLE IF EXISTS reviews");
         db.execSQL("DROP TABLE IF EXISTS orders");
         db.execSQL("DROP TABLE IF EXISTS menu_items");
@@ -144,6 +159,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return exists;
+    }
+
+    public String getUserNameById(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS,
+                new String[]{COLUMN_NAME},
+                COLUMN_USER_ID + " = ?",
+                new String[]{String.valueOf(userId)},
+                null, null, null);
+        String name = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME));
+            cursor.close();
+        }
+        db.close();
+        return name;
     }
 
     public List<Stall> getAllStalls() {
@@ -218,7 +249,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("userId", userId);
         values.put("stallId", stallId);
         values.put("menuItemId", menuItemId);
-        values.put("orderId", 1); // placeholder order reference
+        values.put("orderId", 1);
         values.put("rating", rating);
         values.put("comment", comment);
         values.put("reviewDate", reviewDate);
@@ -250,5 +281,268 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return reviewList;
+    }
+
+    public List<ProductReviewItem> getProductReviewItems(int menuItemId) {
+        List<ProductReviewItem> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT r.reviewId, r.userId, u.name AS reviewerName, r.rating, r.comment, r.reviewDate " +
+                "FROM reviews r JOIN users u ON r.userId = u.userId " +
+                "WHERE r.menuItemId = ? AND r.isVisible = 1 " +
+                "ORDER BY r.reviewId DESC";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(menuItemId)});
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(new ProductReviewItem(
+                        cursor.getInt(cursor.getColumnIndexOrThrow("reviewId")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("userId")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("reviewerName")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("rating")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("comment")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("reviewDate"))
+                ));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
+
+    public boolean reportReview(int reviewId, int reporterId, String reason, String explanation) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("reviewId", reviewId);
+        values.put("reporterId", reporterId > 0 ? reporterId : 1);
+        values.put("reason", reason);
+        values.put("explanation", explanation);
+        values.put("status", "PENDING");
+
+        long result = db.insert("review_reports", null, values);
+        db.close();
+        return result != -1;
+    }
+
+    public boolean addStall(String name, String location, String open, String close, String desc, int isOpen) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("stallName", name);
+        cv.put("location", location);
+        cv.put("openingTime", open);
+        cv.put("closingTime", close);
+        cv.put("description", desc);
+        cv.put("isOpen", isOpen);
+        long res = db.insert("stalls", null, cv);
+        db.close();
+        return res != -1;
+    }
+
+    public boolean updateStall(int id, String name, String location, String open, String close, String desc, int isOpen) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("stallName", name);
+        cv.put("location", location);
+        cv.put("openingTime", open);
+        cv.put("closingTime", close);
+        cv.put("description", desc);
+        cv.put("isOpen", isOpen);
+        int res = db.update("stalls", cv, "stallId = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return res > 0;
+    }
+
+    public boolean addMenuItem(int stallId, String name, String desc, String category, int priceInCentavos, int isAvailable) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("stallId", stallId);
+        cv.put("foodName", name);
+        cv.put("description", desc);
+        cv.put("category", category);
+        cv.put("price", priceInCentavos);
+        cv.put("isAvailable", isAvailable);
+        long res = db.insert("menu_items", null, cv);
+        db.close();
+        return res != -1;
+    }
+
+    public boolean updateMenuItem(int menuItemId, String name, String desc, String category, int priceInCentavos, int isAvailable) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("foodName", name);
+        cv.put("description", desc);
+        cv.put("category", category);
+        cv.put("price", priceInCentavos);
+        cv.put("isAvailable", isAvailable);
+        int res = db.update("menu_items", cv, "menuItemId = ?", new String[]{String.valueOf(menuItemId)});
+        db.close();
+        return res > 0;
+    }
+
+    public boolean deleteMenuItem(int menuItemId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int res = db.delete("menu_items", "menuItemId = ?", new String[]{String.valueOf(menuItemId)});
+        db.close();
+        return res > 0;
+    }
+
+    public List<ModerationReview> getReportedReviews() {
+        List<ModerationReview> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT r.reviewId, r.menuItemId, r.rating, r.comment, r.isVisible, " +
+                "u.name AS reviewerName, m.foodName, s.stallName, " +
+                "COUNT(rep.reportId) AS reportCount, " +
+                "GROUP_CONCAT(DISTINCT rep.reason) AS reasons, " +
+                "GROUP_CONCAT(rep.explanation, ' | ') AS explanations " +
+                "FROM reviews r " +
+                "JOIN review_reports rep ON r.reviewId = rep.reviewId " +
+                "JOIN users u ON r.userId = u.userId " +
+                "JOIN menu_items m ON r.menuItemId = m.menuItemId " +
+                "JOIN stalls s ON m.stallId = s.stallId " +
+                "WHERE r.isVisible = 1 AND rep.status = 'PENDING' " +
+                "GROUP BY r.reviewId " +
+                "ORDER BY r.reviewId DESC";
+
+        Cursor c = db.rawQuery(query, null);
+        if (c.moveToFirst()) {
+            do {
+                list.add(new ModerationReview(
+                        c.getInt(c.getColumnIndexOrThrow("reviewId")),
+                        c.getInt(c.getColumnIndexOrThrow("menuItemId")),
+                        c.getString(c.getColumnIndexOrThrow("foodName")),
+                        c.getString(c.getColumnIndexOrThrow("stallName")),
+                        c.getString(c.getColumnIndexOrThrow("reviewerName")),
+                        c.getInt(c.getColumnIndexOrThrow("rating")),
+                        c.getString(c.getColumnIndexOrThrow("comment")),
+                        c.getInt(c.getColumnIndexOrThrow("isVisible")) == 1,
+                        c.getInt(c.getColumnIndexOrThrow("reportCount")),
+                        c.getString(c.getColumnIndexOrThrow("reasons")),
+                        c.getString(c.getColumnIndexOrThrow("explanations"))
+                ));
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return list;
+    }
+
+    public List<ModerationReview> getHiddenReviews() {
+        List<ModerationReview> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT r.reviewId, r.menuItemId, r.rating, r.comment, r.isVisible, " +
+                "u.name AS reviewerName, m.foodName, s.stallName, " +
+                "COUNT(rep.reportId) AS reportCount, " +
+                "GROUP_CONCAT(DISTINCT rep.reason) AS reasons, " +
+                "GROUP_CONCAT(rep.explanation, ' | ') AS explanations " +
+                "FROM reviews r " +
+                "LEFT JOIN review_reports rep ON r.reviewId = rep.reviewId " +
+                "JOIN users u ON r.userId = u.userId " +
+                "JOIN menu_items m ON r.menuItemId = m.menuItemId " +
+                "JOIN stalls s ON m.stallId = s.stallId " +
+                "WHERE r.isVisible = 0 " +
+                "GROUP BY r.reviewId " +
+                "ORDER BY r.reviewId DESC";
+
+        Cursor c = db.rawQuery(query, null);
+        if (c.moveToFirst()) {
+            do {
+                list.add(new ModerationReview(
+                        c.getInt(c.getColumnIndexOrThrow("reviewId")),
+                        c.getInt(c.getColumnIndexOrThrow("menuItemId")),
+                        c.getString(c.getColumnIndexOrThrow("foodName")),
+                        c.getString(c.getColumnIndexOrThrow("stallName")),
+                        c.getString(c.getColumnIndexOrThrow("reviewerName")),
+                        c.getInt(c.getColumnIndexOrThrow("rating")),
+                        c.getString(c.getColumnIndexOrThrow("comment")),
+                        false,
+                        c.getInt(c.getColumnIndexOrThrow("reportCount")),
+                        c.getString(c.getColumnIndexOrThrow("reasons")),
+                        c.getString(c.getColumnIndexOrThrow("explanations"))
+                ));
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return list;
+    }
+
+    public boolean hideReview(int reviewId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues revValues = new ContentValues();
+        revValues.put("isVisible", 0);
+        int updated = db.update("reviews", revValues, "reviewId = ?", new String[]{String.valueOf(reviewId)});
+
+        ContentValues repValues = new ContentValues();
+        repValues.put("status", "RESOLVED");
+        db.update("review_reports", repValues, "reviewId = ?", new String[]{String.valueOf(reviewId)});
+        db.close();
+        return updated > 0;
+    }
+
+    public boolean dismissReportsForReview(int reviewId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues repValues = new ContentValues();
+        repValues.put("status", "DISMISSED");
+        int updated = db.update("review_reports", repValues, "reviewId = ?", new String[]{String.valueOf(reviewId)});
+        db.close();
+        return updated > 0;
+    }
+
+    public boolean restoreReview(int reviewId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues revValues = new ContentValues();
+        revValues.put("isVisible", 1);
+        int updated = db.update("reviews", revValues, "reviewId = ?", new String[]{String.valueOf(reviewId)});
+        db.close();
+        return updated > 0;
+    }
+
+    public int getStallCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM stalls", null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                count = cursor.getInt(0);
+            }
+            cursor.close();
+        }
+        db.close();
+        return count;
+    }
+
+    public int getProductCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM menu_items", null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                count = cursor.getInt(0);
+            }
+            cursor.close();
+        }
+        db.close();
+        return count;
+    }
+
+    public int getPendingReportCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int count = 0;
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT(DISTINCT r.reviewId) FROM reviews r " +
+                        "JOIN review_reports rep ON r.reviewId = rep.reviewId " +
+                        "WHERE r.isVisible = 1 AND rep.status = 'PENDING'",
+                null
+        );
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                count = cursor.getInt(0);
+            }
+            cursor.close();
+        }
+        db.close();
+        return count;
     }
 }

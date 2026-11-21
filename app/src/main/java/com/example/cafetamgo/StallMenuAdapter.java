@@ -68,4 +68,9 @@ public class StallMenuAdapter extends RecyclerView.Adapter<StallMenuAdapter.Menu
             tvAvailabilityBadge = itemView.findViewById(R.id.tvAvailabilityBadge);
         }
     }
+
+    public void updateList(List<MenuItem> newList) {
+        this.menuList = newList;
+        notifyDataSetChanged();
+    }
 }

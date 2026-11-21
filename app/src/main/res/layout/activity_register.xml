@@ -1,123 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#0C7C1D"
-    tools:context=".RegisterActivity">
+    android:background="#FFF8E7"
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="315dp"
-        android:layout_height="133dp"
-        android:gravity="center"
-        android:text="CafeTamGo"
-        android:textColor="#FFC107"
-        android:textSize="48sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.06" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:text="Name"
-        android:textColor="#FFC107"
-        app:layout_constraintBottom_toTopOf="@+id/etRegisterName"
-        app:layout_constraintStart_toStartOf="@+id/etRegisterName" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="56dp"
+        android:paddingBottom="32dp">
 
-    <EditText
-        android:id="@+id/etRegisterName"
-        android:layout_width="295dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="140dp"
-        android:background="#FFFBFB"
-        android:ems="10"
-        android:paddingLeft="12dp"
-        android:hint="Arthur Morgan"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        <!-- Brand Title: CafeTam (green) + Go! (gold) -->
+        <TextView
+            android:id="@+id/tvRegisterBrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CafeTamGo!"
+            android:textColor="#0A8A0A"
+            android:textSize="32sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:text="Email"
-        android:textColor="#FFC107"
-        app:layout_constraintBottom_toTopOf="@+id/etRegisterEmail"
-        app:layout_constraintStart_toStartOf="@+id/etRegisterEmail" />
+        <!-- Section Heading -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="Register"
+            android:textColor="#0A8A0A"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/etRegisterEmail"
-        android:layout_width="295dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="32dp"
-        android:background="#FFFBFB"
-        android:ems="10"
-        android:paddingLeft="12dp"
-        android:hint="example@gmail.com"
-        android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etRegisterName" />
+        <!-- Elevated White Form Card -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="8dp">
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:text="Password"
-        android:textColor="#FFC107"
-        app:layout_constraintBottom_toTopOf="@+id/etRegisterPassword"
-        app:layout_constraintStart_toStartOf="@+id/etRegisterPassword" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="22dp"
+                android:paddingVertical="26dp">
 
-    <EditText
-        android:id="@+id/etRegisterPassword"
-        android:layout_width="295dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="32dp"
-        android:background="#FFFBFB"
-        android:ems="10"
-        android:paddingLeft="12dp"
-        android:hint="123456789"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etRegisterEmail" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textColor="#1C1C1C"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="295dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="36dp"
-        android:backgroundTint="#FFC107"
-        android:gravity="center"
-        android:text="REGISTER"
-        android:textColor="#0C7C1D"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etRegisterPassword" />
+                <EditText
+                    android:id="@+id/etRegisterName"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_auth_input"
+                    android:hint=""
+                    android:inputType="textPersonName|textCapWords"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="#1C1C1C"
+                    android:textSize="14sp" />
 
-    <Button
-        android:id="@+id/btnGoToLogin"
-        android:layout_width="295dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="12dp"
-        android:backgroundTint="#FFC107"
-        android:gravity="center"
-        android:text="LOGIN"
-        android:textColor="#0C7C1D"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Email Address"
+                    android:textColor="#1C1C1C"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <EditText
+                    android:id="@+id/etRegisterEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_auth_input"
+                    android:hint=""
+                    android:inputType="textEmailAddress"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="#1C1C1C"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Password"
+                    android:textColor="#1C1C1C"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etRegisterPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_auth_input"
+                    android:hint=""
+                    android:inputType="textPassword"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="#1C1C1C"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/btnRegister"
+                    android:layout_width="150dp"
+                    android:layout_height="38dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/bg_auth_pill_green"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:padding="0dp"
+                    android:text="Register"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Footer Link -->
+        <TextView
+            android:id="@+id/tvGoToLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="6dp"
+            android:text="Already have an account? Login here."
+            android:textColor="#666666"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,159 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF8F5"
-    android:padding="16dp">
+    android:background="#FFF8E7"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Top Header Info -->
+        <!-- Warm Cream Stall Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:background="#FFF8E7"
+            android:orientation="vertical"
+            android:paddingHorizontal="18dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="22dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="36dp">
+
+                <ImageButton
+                    android:id="@+id/btnBackStallDetails"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Back"
+                    android:src="@android:drawable/ic_menu_revert"
+                    android:tint="#1C1C1C" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Menu"
+                    android:textColor="#1C1C1C"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvStallTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mangan Tamu Pu"
-                    android:textColor="#1B5E20"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvStallLocationInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="8th Floor | FEU Tech Canteen\nOpen from 7:00 AM to 4:00 PM"
-                    android:textColor="#555555"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:id="@+id/tvStallRatingSummary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="★ 4.6 (40 reviews)"
-                    android:textColor="#E67E22"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <!-- Banner Image Box Placeholder -->
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="90dp"
-                android:background="#D0D0D0"
-                android:scaleType="centerCrop" />
-        </LinearLayout>
-
-        <!-- Search Bar -->
-        <EditText
-            android:id="@+id/etSearchMenu"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="20dp"
-            android:background="@android:drawable/editbox_background_normal"
-            android:hint="Search our menu"
-            android:paddingHorizontal="16dp"
-            android:textSize="14sp" />
-
-        <!-- "Our Menu" Header & Controls -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Our Menu"
-                android:textColor="#1C1C1C"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btnSortMenu"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:backgroundTint="#EAEAEA"
-                android:text="Sort"
-                android:textColor="#333333" />
-        </LinearLayout>
-
-        <!-- Category Horizontal Scroll Chips -->
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/chipAll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginEnd="8dp"
-                    android:backgroundTint="#1B5E20"
-                    android:text="All"
-                    android:textColor="#FFFFFF" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingEnd="12dp">
 
-                <Button
-                    android:id="@+id/chipRiceMeals"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginEnd="8dp"
-                    android:backgroundTint="#EAEAEA"
-                    android:text="Rice Meals"
-                    android:textColor="#333333" />
+                    <TextView
+                        android:id="@+id/tvStallTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mangan Tamu Pu"
+                        android:textColor="#0A8A0A"
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/chipPasta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_marginEnd="8dp"
-                    android:backgroundTint="#EAEAEA"
-                    android:text="Pasta"
-                    android:textColor="#333333" />
+                    <TextView
+                        android:id="@+id/tvStallLocationInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="8th Floor | FEU Tech Canteen\nOpen from 7:00 AM to 4:00 PM"
+                        android:textColor="#555555"
+                        android:textSize="12sp" />
 
-                <Button
-                    android:id="@+id/chipDrinks"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:backgroundTint="#EAEAEA"
-                    android:text="Drinks"
-                    android:textColor="#333333" />
+                    <TextView
+                        android:id="@+id/tvStallRatingSummary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="★ 4.6 (40 reviews)"
+                        android:textColor="#1C1C1C"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="112dp"
+                    android:layout_height="104dp"
+                    app:cardBackgroundColor="#CCCCCC"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp">
+
+                    <ImageView
+                        android:id="@+id/ivStallHeaderImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop" />
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
-        </HorizontalScrollView>
+        </LinearLayout>
 
-        <!-- Menu Items RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvStallMenu"
+        <!-- White Menu Content Sheet -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:nestedScrollingEnabled="false" />
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="24dp">
 
+            <EditText
+                android:id="@+id/etSearchMenu"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@android:drawable/editbox_background_normal"
+                android:drawableEnd="@android:drawable/ic_menu_search"
+                android:hint="Search our menu"
+                android:paddingHorizontal="14dp"
+                android:textSize="14sp" />
+
+            <!-- Our Menu Header + Sort & Available now -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Our Menu"
+                    android:textColor="#0A8A0A"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnSortMenu"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_pill_outline_button"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="⇅ Sort"
+                    android:textAllCaps="false"
+                    android:textColor="#1C1C1C"
+                    android:textSize="11sp"
+                    app:backgroundTint="@null" />
+
+                <Button
+                    android:id="@+id/btnAvailableNow"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/bg_pill_outline_button"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="Available now"
+                    android:textAllCaps="false"
+                    android:textColor="#1C1C1C"
+                    android:textSize="11sp"
+                    app:backgroundTint="@null" />
+            </LinearLayout>
+
+            <!-- Category Filter Row -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/chipAll"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:background="@drawable/bg_category_chip_selected"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:paddingHorizontal="16dp"
+                        android:text="All"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/chipRiceMeals"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_category_chip_unselected"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:paddingHorizontal="14dp"
+                        android:text="Rice Meals"
+                        android:textAllCaps="false"
+                        android:textColor="#1C1C1C"
+                        android:textSize="12sp"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/chipPasta"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_category_chip_unselected"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:paddingHorizontal="14dp"
+                        android:text="Pasta"
+                        android:textAllCaps="false"
+                        android:textColor="#1C1C1C"
+                        android:textSize="12sp"
+                        app:backgroundTint="@null" />
+
+                    <Button
+                        android:id="@+id/chipDrinks"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_category_chip_unselected"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:paddingHorizontal="14dp"
+                        android:text="Drinks"
+                        android:textAllCaps="false"
+                        android:textColor="#1C1C1C"
+                        android:textSize="12sp"
+                        app:backgroundTint="@null" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvStallMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:nestedScrollingEnabled="false" />
+
+        </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

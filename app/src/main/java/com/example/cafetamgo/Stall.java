@@ -11,6 +11,8 @@ public class Stall {
     private double averageRating;
     private int reviewCount;
 
+    private String imageUri;
+
     public Stall(int stallId, String stallName, String location, String openingTime, String closingTime, String description, int isOpen, double averageRating, int reviewCount) {
         this.stallId = stallId;
         this.stallName = stallName;
@@ -32,4 +34,6 @@ public class Stall {
     public int getIsOpen() { return isOpen; }
     public double getAverageRating() { return averageRating; }
     public int getReviewCount() { return reviewCount; }
+
+    public String getImageUri() { return imageUri; }
 }

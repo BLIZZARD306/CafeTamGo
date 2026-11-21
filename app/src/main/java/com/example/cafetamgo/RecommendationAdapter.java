@@ -60,4 +60,9 @@ public class RecommendationAdapter extends RecyclerView.Adapter<RecommendationAd
             tvFoodRating = itemView.findViewById(R.id.tvFoodRating);
         }
     }
+
+    public void updateList(List<MenuItem> newList) {
+        this.menuList = newList;
+        notifyDataSetChanged();
+    }
 }

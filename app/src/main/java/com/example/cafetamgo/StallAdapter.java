@@ -68,4 +68,9 @@ public class StallAdapter extends RecyclerView.Adapter<StallAdapter.StallViewHol
             tvOpenBadge = itemView.findViewById(R.id.tvOpenBadge);
         }
     }
+
+    public void updateList(List<Stall> newList) {
+        this.stallList = newList;
+        notifyDataSetChanged();
+    }
 }
