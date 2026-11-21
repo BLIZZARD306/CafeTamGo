@@ -10,7 +10,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class AddEditProductActivity extends AppCompatActivity {
+
+    private static final List<String> ALLOWED_CATEGORIES =
+            Arrays.asList("Rice Meals", "Pasta", "Drinks");
 
     private TextView tvProductHeaderTitle;
     private EditText etProductName, etProductDescription, etProductCategory, etProductPrice;
@@ -51,6 +57,14 @@ public class AddEditProductActivity extends AppCompatActivity {
         btnRemoveProduct.setOnClickListener(v -> removeProduct());
     }
 
+    private void showMessage(String message) {
+        runOnUiThread(() -> Toast.makeText(
+                AddEditProductActivity.this,
+                message,
+                Toast.LENGTH_LONG
+        ).show());
+    }
+
     private void loadProductData(int id) {
         for (MenuItem item : dbHelper.getAllMenuItems()) {
             if (item.getMenuItemId() == id) {
@@ -72,12 +86,45 @@ public class AddEditProductActivity extends AppCompatActivity {
         String priceStr = etProductPrice.getText().toString().trim();
         int isAvailable = switchIsAvailable.isChecked() ? 1 : 0;
 
-        if (name.isEmpty() || category.isEmpty() || priceStr.isEmpty()) {
-            Toast.makeText(this, "Name, category, and price are required", Toast.LENGTH_SHORT).show();
+        if (name.isEmpty()) {
+            showMessage("Please enter a product name");
             return;
         }
 
-        int priceInCentavos = (int) Math.round(Double.parseDouble(priceStr) * 100.0);
+        if (!name.matches("[a-zA-Z0-9 ]+")) {
+            showMessage("Product name must only contain letters, numbers, and spaces");
+            return;
+        }
+
+        if (category.isEmpty()) {
+            showMessage("Please enter a category");
+            return;
+        }
+
+        if (!ALLOWED_CATEGORIES.contains(category)) {
+            showMessage("Category must be Rice Meals, Pasta, or Drinks");
+            return;
+        }
+
+        if (priceStr.isEmpty()) {
+            showMessage("Please enter a price");
+            return;
+        }
+
+        double priceValue;
+        try {
+            priceValue = Double.parseDouble(priceStr);
+        } catch (NumberFormatException e) {
+            showMessage("Please enter a valid price");
+            return;
+        }
+
+        if (priceValue <= 0) {
+            showMessage("Price must be greater than 0");
+            return;
+        }
+
+        int priceInCentavos = (int) Math.round(priceValue * 100.0);
 
         boolean success;
         if (menuItemId == -1) {
@@ -87,19 +134,19 @@ public class AddEditProductActivity extends AppCompatActivity {
         }
 
         if (success) {
-            Toast.makeText(this, "Product saved!", Toast.LENGTH_SHORT).show();
+            showMessage("Product saved!");
             finish();
         } else {
-            Toast.makeText(this, "Failed to save product", Toast.LENGTH_SHORT).show();
+            showMessage("Failed to save product");
         }
     }
 
     private void removeProduct() {
         if (menuItemId != -1 && dbHelper.deleteMenuItem(menuItemId)) {
-            Toast.makeText(this, "Product removed", Toast.LENGTH_SHORT).show();
+            showMessage("Product removed");
             finish();
         } else {
-            Toast.makeText(this, "Failed to remove product", Toast.LENGTH_SHORT).show();
+            showMessage("Failed to remove product");
         }
     }
 }
